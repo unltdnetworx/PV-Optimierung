@@ -1,0 +1,364 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="fo:5Y;}DAWiu#~+46sk^">ID</variable>
+    <variable id="G%,:JG_BiAfo6NWE^OCm">Name</variable>
+    <variable id="hTTW`!LmBAlyEzeeTI~{">GrenzeAufheizen</variable>
+    <variable type="timeout" id="Ueberheizen">Ueberheizen</variable>
+    <variable type="timeout" id="UeberheizenAbbrechen">UeberheizenAbbrechen</variable>
+  </variables>
+  <block type="procedures_defcustomnoreturn" id="s}Pwi720KKlpTUa:!xH5" x="-187" y="-837">
+    <mutation statements="false">
+      <arg name="ID" varid="fo:5Y;}DAWiu#~+46sk^"></arg>
+      <arg name="Name" varid="G%,:JG_BiAfo6NWE^OCm"></arg>
+    </mutation>
+    <field name="NAME">newBoolDP</field>
+    <field name="SCRIPT">Y3JlYXRlU3RhdGUoSUQsIGZhbHNlLCB7dHlwZTogJ2Jvb2xlYW4nLCBuYW1lOiBOYW1lfSk7</field>
+    <comment pinned="false" h="80" w="160">Datenpunkt Typ Logikwert erzeugen</comment>
+  </block>
+  <block type="procedures_callcustomnoreturn" id="yu*AaE2T+b;5VZ!(J1cB" x="-187" y="-762">
+    <mutation name="newBoolDP">
+      <arg name="ID"></arg>
+      <arg name="Name"></arg>
+    </mutation>
+    <value name="ARG0">
+      <block type="text" id="i#PLPLDoFPGS*Le@XqVp">
+        <field name="TEXT">0_userdata.0.Stiebel-ISG.ueberheizenOkay</field>
+      </block>
+    </value>
+    <value name="ARG1">
+      <block type="text" id="+7yrDXoQxes7-XG`M#-5">
+        <field name="TEXT">ueberheizenOkay</field>
+      </block>
+    </value>
+    <next>
+      <block type="comment" id="#}@gmd4mp^2OpL(gC/Bd">
+        <field name="COMMENT">50% der maximalen PV-Erzeugung</field>
+        <next>
+          <block type="variables_set" id="`;30onBdGcU,#LSVhKi-">
+            <field name="VAR" id="hTTW`!LmBAlyEzeeTI~{">GrenzeAufheizen</field>
+            <value name="VALUE">
+              <block type="math_arithmetic" id="^Vf_3jf}3eg1-A9|~;t6">
+                <field name="OP">MULTIPLY</field>
+                <value name="A">
+                  <shadow xmlns="http://www.w3.org/1999/xhtml" type="math_number" id=".K2UhxU3DNR:?W!hTt:k">
+                    <field name="NUM">7.8</field>
+                  </shadow>
+                  <block type="get_value" id="Q;lxvr}c];OtcUv3ui_S">
+                    <field name="ATTR">val</field>
+                    <field name="OID">energymanager.0.PV-Anlage_(PV-Anlage).PowerInstalledPeak</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <shadow xmlns="http://www.w3.org/1999/xhtml" type="math_number" id="mm0Z%Oqdeavubs?f4ip:">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="math_arithmetic" id="V8l+C},Li6jcB.n`%g/q">
+                    <field name="OP">DIVIDE</field>
+                    <value name="A">
+                      <shadow type="math_number" id="C7WgwuXpyzs1_G)UU{|}">
+                        <field name="NUM">50</field>
+                      </shadow>
+                    </value>
+                    <value name="B">
+                      <shadow type="math_number" id="Rb/{4V/MackCU%{?8Lgx">
+                        <field name="NUM">100</field>
+                      </shadow>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="on_ext" id="(L5U,XVEY!~+6x./6|}x">
+                <mutation xmlns="http://www.w3.org/1999/xhtml" items="2"></mutation>
+                <field name="CONDITION">ne</field>
+                <field name="ACK_CONDITION"></field>
+                <value name="OID0">
+                  <shadow type="field_oid" id="y$zxsG-k99k/Wzk*6OMR">
+                    <field name="oid">energymanager.0.MyReserve-Leistungsmesser_(EON_Aura_ACS).PowerIn</field>
+                  </shadow>
+                  <block type="field_oid" id="L?+ESydddAJ{s^Y`mnAH">
+                    <field name="oid">energymanager.0.Standort_(Standort).PowerOut</field>
+                  </block>
+                </value>
+                <value name="OID1">
+                  <shadow type="field_oid" id=";AE:VMd@0;]5B-w*Ly5*">
+                    <field name="oid">default</field>
+                  </shadow>
+                  <block type="field_oid" id="Q|0qa%*lPTxB:6v}DQ0:">
+                    <field name="oid">energymanager.0.Standort_(Standort).PowerIn</field>
+                  </block>
+                </value>
+                <statement name="STATEMENT">
+                  <block type="comment" id="d1eP.{ZG{xsWc6+duA3*">
+                    <field name="COMMENT">Falls Einspeisung über 50% liegt, Heizung überheizen</field>
+                    <next>
+                      <block type="controls_if" id="d6pe]HlSk_AfX7m*p[M:">
+                        <mutation else="1"></mutation>
+                        <value name="IF0">
+                          <block type="logic_operation" id="c?rgJc;YEAY1A0(.DhLY">
+                            <field name="OP">OR</field>
+                            <value name="A">
+                              <block type="logic_compare" id="K0_c|C^]MG~{6#-xrG3-">
+                                <field name="OP">GT</field>
+                                <value name="A">
+                                  <block type="get_value" id="EQ5nsav2]VRJ1F{dVXQj">
+                                    <field name="ATTR">val</field>
+                                    <field name="OID">energymanager.0.MyReserve-Leistungsmesser_(EON_Aura_ACS).PowerOut</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="variables_get" id="-hy[IxfzaUP7~,|^;F!S">
+                                    <field name="VAR" id="hTTW`!LmBAlyEzeeTI~{">GrenzeAufheizen</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="logic_operation" id="0O7sL{|1)]#;G,UY2Kja">
+                                <field name="OP">AND</field>
+                                <value name="A">
+                                  <block type="logic_compare" id="vpcwj%2UQD$Xa21Q4z9A">
+                                    <field name="OP">GT</field>
+                                    <value name="A">
+                                      <block type="get_value" id="0!u*6*Nu?C9GAg2Z#uDM">
+                                        <field name="ATTR">val</field>
+                                        <field name="OID">energymanager.0.MyReserve-Leistungsmesser_(EON_Aura_ACS).PowerOut</field>
+                                      </block>
+                                    </value>
+                                    <value name="B">
+                                      <block type="text" id="fHHi:jO0}i1jQ|hI2V%!">
+                                        <field name="TEXT">0.1</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="logic_compare" id="m{%.Li(JZhFP4gJS0BRO">
+                                    <field name="OP">GT</field>
+                                    <value name="A">
+                                      <block type="get_value" id="!R:mbMWuKg)@!4oYwd5B">
+                                        <field name="ATTR">val</field>
+                                        <field name="OID">stiebel-isg.0.Info.ANLAGE.WÄRMEERZEUGER.HEIZSTUFE</field>
+                                      </block>
+                                    </value>
+                                    <value name="B">
+                                      <block type="text" id="YxM4gVNPnP)2k3+6=Yl8">
+                                        <field name="TEXT">0</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="control" id="KMo[i%`E3!5?bZM^6AV/">
+                            <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                            <field name="OID">0_userdata.0.Stiebel-ISG.ueberheizenOkay</field>
+                            <field name="WITH_DELAY">FALSE</field>
+                            <value name="VALUE">
+                              <block type="logic_boolean" id=":=q6wbXo.C4Bz3g_vQ0o">
+                                <field name="BOOL">TRUE</field>
+                              </block>
+                            </value>
+                          </block>
+                        </statement>
+                        <statement name="ELSE">
+                          <block type="control" id="vDj5:z@5nlePY9siouJL">
+                            <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                            <field name="OID">0_userdata.0.Stiebel-ISG.ueberheizenOkay</field>
+                            <field name="WITH_DELAY">FALSE</field>
+                            <value name="VALUE">
+                              <block type="logic_boolean" id="oSo7+3viX}[khD]=Mb?4">
+                                <field name="BOOL">FALSE</field>
+                              </block>
+                            </value>
+                          </block>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <next>
+                  <block type="on_ext" id="nH@,fK.;bPFyo1jhGe`%">
+                    <mutation xmlns="http://www.w3.org/1999/xhtml" items="1"></mutation>
+                    <field name="CONDITION">ne</field>
+                    <field name="ACK_CONDITION"></field>
+                    <value name="OID0">
+                      <shadow type="field_oid" id="T;jygGdJz,LDCS_=8L27">
+                        <field name="oid">0_userdata.0.Stiebel-ISG.ueberheizenOkay</field>
+                      </shadow>
+                    </value>
+                    <statement name="STATEMENT">
+                      <block type="controls_if" id="kx|)%P~}CsKZ!-U#XqZM">
+                        <mutation else="1"></mutation>
+                        <value name="IF0">
+                          <block type="logic_compare" id="ugBhxdb`er)gQSf09~+f">
+                            <field name="OP">EQ</field>
+                            <value name="A">
+                              <block type="on_source" id="#E93!6YsHJ*$pz7fk3S$">
+                                <field name="ATTR">state.val</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <block type="logic_boolean" id="q6s^/L,eCK,t=:2{Ng.m">
+                                <field name="BOOL">TRUE</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="timeouts_cleartimeout" id="L5LX!v|D#S)1Y:8cpA1Z">
+                            <field name="NAME">UeberheizenAbbrechen</field>
+                            <next>
+                              <block type="timeouts_settimeout" id="{0^=3N-K`1Zs8CYvwu6Q">
+                                <field name="NAME">Ueberheizen</field>
+                                <field name="DELAY">15</field>
+                                <field name="UNIT">min</field>
+                                <statement name="STATEMENT">
+                                  <block type="debug" id="^XK_@jdN]`X|/}(xKBZP">
+                                    <field name="Severity">log</field>
+                                    <value name="TEXT">
+                                      <shadow type="text" id="kXE|^Gi9D,sr^[j*_NN_">
+                                        <field name="TEXT">Überheizen aktiviert</field>
+                                      </shadow>
+                                    </value>
+                                    <next>
+                                      <block type="control" id=",6-LAC/$+xxr.)@)s]{J">
+                                        <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                                        <field name="OID">modbus.1.holdingRegisters.44002_SG_Ready_Eingang1</field>
+                                        <field name="WITH_DELAY">FALSE</field>
+                                        <value name="VALUE">
+                                          <block type="math_number" id="Br-KmDANT48l.U}|=QKs">
+                                            <field name="NUM">1</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </statement>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                        <statement name="ELSE">
+                          <block type="timeouts_cleartimeout" id="KK[.Gep]J`RRh37b4rW]">
+                            <field name="NAME">Ueberheizen</field>
+                            <next>
+                              <block type="comment" id="iZf39FBl52(qv@{*xXIX">
+                                <field name="COMMENT">Überheizen abbrechen, falls aktiv</field>
+                                <next>
+                                  <block type="timeouts_settimeout" id="KCzyN=P-)O|wx]thX]oG">
+                                    <field name="NAME">UeberheizenAbbrechen</field>
+                                    <field name="DELAY">30</field>
+                                    <field name="UNIT">min</field>
+                                    <statement name="STATEMENT">
+                                      <block type="debug" id="Wn6[f~YBIYugE6arfiL_">
+                                        <field name="Severity">log</field>
+                                        <value name="TEXT">
+                                          <shadow type="text" id="~bH![-0JK8L52wAWX[*|">
+                                            <field name="TEXT">Überheizen deaktiviert</field>
+                                          </shadow>
+                                        </value>
+                                        <next>
+                                          <block type="control" id="vlX])2ghLfx-oS_p6A;Q">
+                                            <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                                            <field name="OID">modbus.1.holdingRegisters.44002_SG_Ready_Eingang1</field>
+                                            <field name="WITH_DELAY">FALSE</field>
+                                            <value name="VALUE">
+                                              <block type="math_number" id="9o/cSGGb2u9mROiG;5%o">
+                                                <field name="NUM">0</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </statement>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="control" id="[:p%HSD}o5Z)v{wcr0Db">
+                        <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                        <field name="OID">0_userdata.0.Stiebel-ISG.ueberheizenOkay</field>
+                        <field name="WITH_DELAY">FALSE</field>
+                        <value name="VALUE">
+                          <block type="logic_boolean" id="R)3w7~m=iAk|BmH;X=`o">
+                            <field name="BOOL">FALSE</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="on_ext" id="/uF!5vgPWNnD;LzSq,h1">
+                            <mutation xmlns="http://www.w3.org/1999/xhtml" items="1"></mutation>
+                            <field name="CONDITION">ne</field>
+                            <field name="ACK_CONDITION"></field>
+                            <value name="OID0">
+                              <shadow type="field_oid" id="%d$53*mjD+,oZV4u-R=s">
+                                <field name="oid">modbus.1.holdingRegisters.44002_SG_Ready_Eingang1</field>
+                              </shadow>
+                            </value>
+                            <statement name="STATEMENT">
+                              <block type="controls_if" id=",!isgOhK$H$I9{iWcwQp">
+                                <mutation else="1"></mutation>
+                                <value name="IF0">
+                                  <block type="logic_compare" id="oPSwXL#Yt$dlIiYiJ/M[">
+                                    <field name="OP">EQ</field>
+                                    <value name="A">
+                                      <block type="on_source" id="3zVv~xF[rUnQyLoKj8iP">
+                                        <field name="ATTR">state.val</field>
+                                      </block>
+                                    </value>
+                                    <value name="B">
+                                      <block type="math_number" id="l?KVnTY*E*ueDG^|$}G;">
+                                        <field name="NUM">1</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <statement name="DO0">
+                                  <block type="control" id="sVHhOlJ1Acj@AB4ej1s1">
+                                    <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                                    <field name="OID">0_userdata.0.Tecalor.ueberheizenOkay</field>
+                                    <field name="WITH_DELAY">FALSE</field>
+                                    <value name="VALUE">
+                                      <block type="logic_boolean" id="[on]Q9e`agUCekG]nIcw">
+                                        <field name="BOOL">TRUE</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </statement>
+                                <statement name="ELSE">
+                                  <block type="control" id="98i?8N08N*(+5]]K](j3">
+                                    <mutation xmlns="http://www.w3.org/1999/xhtml" delay_input="false"></mutation>
+                                    <field name="OID">0_userdata.0.Tecalor.ueberheizenOkay</field>
+                                    <field name="WITH_DELAY">FALSE</field>
+                                    <value name="VALUE">
+                                      <block type="logic_boolean" id="c1pYG_$B$-y;n1ySGS+R">
+                                        <field name="BOOL">FALSE</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </statement>
+                              </block>
+                            </statement>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
